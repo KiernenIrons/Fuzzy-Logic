@@ -46,13 +46,15 @@ void Game::render()
 	{
 		m_window.draw(m_badGuys[i]);
 	}
+
 	for (int i = 0; i < m_deployCount; i++)
 	{
 		m_window.draw(m_goodGuys[i]);
 	}
 
-	std::cout << "Bad Guys: " << m_enemyCount << std::endl;
-	std::cout << "Good Guys: " << m_deployCount << std::endl;
+	m_window.draw(m_enemyCountT);
+	m_window.draw(m_distanceT);
+	m_window.draw(m_deployCountT);
 
 	m_window.display();
 }
@@ -100,23 +102,23 @@ void Game::calculate()
 	m_enemyCount = (rand() % MAX_BAD_GUYS) + 1;
 	m_distance = (float)(rand() % MAX_DISTANCE) + 1;
 	m_deployCount = Rules::getDeployCount(m_enemyCount, m_distance);
-	positioning();
-}
+	
+	m_enemyCountT.setString("Bad Guys: " + std::to_string(m_enemyCount));
+	m_distanceT.setString("Bad Guys Range: " + std::to_string(m_distance));
+	m_deployCountT.setString("Good Guys to Deploy: " + std::to_string(m_deployCount));
 
-void Game::positioning()
-{
 	for (int i = 0; i < m_deployCount; i++)
 	{
 		m_goodGuys[i].setPosition(
-							(rand() % (m_window.getSize().x / 2)),
-							(rand() % m_window.getSize().y));
+			(rand() % (m_window.getSize().x / 2)),
+			(rand() % m_window.getSize().y));
 	}
 
 	for (int i = 0; i < m_enemyCount; i++)
 	{
 		m_badGuys[i].setPosition(
-							(rand() % (m_window.getSize().x / 2)) + (m_window.getSize().x / 2),
-							(rand() % m_window.getSize().y));
+			(rand() % (m_window.getSize().x / 2)) + (m_window.getSize().x / 2),
+			(rand() % m_window.getSize().y));
 	}
 }
 
@@ -142,21 +144,22 @@ void Game::setup()
 		m_goodGuys.push_back(m_circle);
 	}
 
-	calculate();
-
 	m_font.loadFromFile("Assets/Fonts/arial.ttf");
-	m_enemyCountT.setFont(m_font);
-	m_enemyCountT.setFillColor(sf::Color::Black);
-	m_enemyCountT.setPosition(10, 50);
-	m_enemyCountT.setString("Test");
 
 	m_distanceT.setFont(m_font);
-	m_distanceT.setFillColor(sf::Color::Black);
-	m_distanceT.setPosition(10, 80);
-	m_distanceT.setString("Test");
+	m_distanceT.setCharacterSize(10);
+	m_distanceT.setFillColor(sf::Color::White);
+	m_distanceT.setPosition(10, 15);
+
+	m_enemyCountT.setFont(m_font);
+	m_enemyCountT.setCharacterSize(10);
+	m_enemyCountT.setFillColor(sf::Color::White);
+	m_enemyCountT.setPosition(10, 45);
 
 	m_deployCountT.setFont(m_font);
-	m_deployCountT.setFillColor(sf::Color::Black);
-	m_deployCountT.setPosition(10, 110);
-	m_deployCountT.setString("Test");
+	m_deployCountT.setCharacterSize(10);
+	m_deployCountT.setFillColor(sf::Color::White);
+	m_deployCountT.setPosition(10, 75);
+
+	calculate();
 }

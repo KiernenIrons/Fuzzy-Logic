@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include <SFML/Graphics.hpp>
+#include <string>
 #include "Rules.h"
 
 class Game
@@ -18,7 +19,6 @@ private:
 	void processKeys(sf::Event t_e);
 	void processMouse(sf::Event t_e);
 	void calculate();
-	void positioning();
 	void setup();
 
 private:
